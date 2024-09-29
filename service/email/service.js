@@ -5,13 +5,13 @@ class EmailService {
         this.sender = sender
         switch (env) {
             case 'development':
-                this.link = 'http://localhost:3001'
+                this.link = 'http://localhost:7777'
                 break
             case 'test':
                 this.link = 'http://localhost:5000'
                 break
             case 'production':
-                this.link = 'https://wallet-codewriters.herokuapp.com'
+                this.link = "https://wallet-app-back.onrender.com";
                 break
             default:
                 this.link = 'http://localhost:3000'

@@ -2,13 +2,13 @@
   "swagger": "2.0",
   "info": {
     "description": "This is an online wallet server. Below you can find a detailed documentation regarding all possible requests that our online wallet server can handle. Have fun!  <br /> <br /> <i>P.S. In order to see what fields are required in the request body and their types - click on the <i><strong>Model</strong></i> button next to the <i><strong>Example Value</strong></i>.</i>",
-    "version": "1.0.0",
+    "version": "0.2.1",
     "title": "eWallet",
     "contact": {
-      "email": "tisha.kruglyak@gmail.com"
+      "email": "kruhlyak.tychon@gmail.com"
     }
   },
-  "host": "wallet-codewriters.herokuapp.com",
+  "host": "wallet-app-back.onrender.com",
   "basePath": "/",
   "schemes": [
     "http"

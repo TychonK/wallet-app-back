@@ -13,8 +13,17 @@ const verifyUser = async (req, res) => {
         await userFromToken.save();
         res
         // .status(HttpCode.OK)
-        // .json({ status: 'success', code: HttpCode.OK, data: { message: 'success' } })
-        .redirect('http://wallet-codowriters.netlify.app')
+            // .json({ status: 'success', code: HttpCode.OK, data: { message: 'success' } })
+
+            ///
+            ///
+            ///
+            .redirect('http://wallet-codowriters.netlify.app') //////////// TOOOOOO BEEEEEE UPDATEEEED
+        ///
+        ///
+        ///
+        ///
+        ///
         
     } else {
         res
