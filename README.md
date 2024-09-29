@@ -55,7 +55,7 @@ To get the backend running locally, follow these steps:
     npm install
 
 3. **Set up environment variables**
-Create a `.env` file in the root of your project with the following values:**
+Create a `.env` file in the root of your project with the following values:
     ```bash
     MONGO_URI=<your-mongodb-url>
     JWT_SECRET=<your-jwt-secret>
