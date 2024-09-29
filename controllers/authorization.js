@@ -3,7 +3,7 @@ const { User } = require('../models/User-model.js');
 const { HTTP_STATUS_CODE, STATUS } = require('../helpers/constants.js');
 
 const EmailService = require("../service/email/service");
-const SenderSendgrid = require("../service/email/sender");
+const SenderBrevo = require("../service/email/senderBrevo");
 const HttpCode = require('../lib/constants.js');
 
 ///////signup
@@ -19,15 +19,23 @@ const signup = async (req, res) => {
 
   const newUser = new User({
     name,
-    email
+    email,
   });
 
   newUser.setHashPassword(password);
   newUser.setToken();
-  newUser.save();
+  await newUser.save(); // Ensure the user is saved before sending the email
 
-  const emailService = new EmailService(process.env.NODE_ENV, new SenderSendgrid())
-  const isVerifyEmailSent = await emailService.sendVerifyEmail(email, name, newUser.verificationToken)
+  const emailService = new EmailService(
+    process.env.NODE_ENV,
+    new SenderBrevo()
+  );
+
+  const isVerifyEmailSent = await emailService.sendVerifyEmail(
+    email,
+    name,
+    newUser.verificationToken
+  );
 
   return res.status(HTTP_STATUS_CODE.CREATED).json({
     status: STATUS.CREATED,
@@ -35,13 +43,14 @@ const signup = async (req, res) => {
     payload: {
       user: {
         name: newUser.name,
-        email: newUser.email
+        email: newUser.email,
       },
       isVerifyEmailSent: isVerifyEmailSent,
-      token: newUser.token
+      token: newUser.token,
     },
   });
 };
+
 
 
 //// login 

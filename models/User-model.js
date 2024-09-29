@@ -80,6 +80,6 @@ userSchema.methods.setToken = function () {
 };
 
 
-const User = model('user', userSchema);
+const User = model('users', userSchema);
 
 module.exports = { User, userSchema };
