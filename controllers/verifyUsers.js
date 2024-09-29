@@ -12,18 +12,9 @@ const verifyUser = async (req, res) => {
         await repositoryUsers.updateVerify(userFromToken.id, true)
         await userFromToken.save();
         res
-        // .status(HttpCode.OK)
-            // .json({ status: 'success', code: HttpCode.OK, data: { message: 'success' } })
-
-            ///
-            ///
-            ///
-            .redirect('http://wallet-codowriters.netlify.app') //////////// TOOOOOO BEEEEEE UPDATEEEED
-        ///
-        ///
-        ///
-        ///
-        ///
+          // .status(HttpCode.OK)
+          // .json({ status: 'success', code: HttpCode.OK, data: { message: 'success' } })
+          .redirect("http://wallet-online.netlify.app");
         
     } else {
         res
