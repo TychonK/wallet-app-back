@@ -79,29 +79,32 @@ class Transactions{
     }
 
     async getStats(req, res) {
-        const { _id } = req.user;
-        const {month, year} = req.query;
-        const transactions = await WalletModel.find({ owner: _id });
-        // console.log(transactions);
-        const sortingTransactions = [];
+        try {
+          const { _id } = req.user;
+          const { month, year } = req.query;
+          const transactions = await WalletModel.find({ owner: _id });
+          // console.log(transactions);
+          const sortingTransactions = [];
 
-        const data = {}
-        const date = []
+          const data = {};
+          const date = [];
 
-        const balance = {
+          const balance = {
             income: 0,
             consumption: 0,
-            balance: 0
-        }
+            balance: 0,
+          };
 
-        for (const trans of transactions) {
-
+          for (const trans of transactions) {
             const [transMonth, , transYear] = trans.date.split("/");
 
-            const transDate = `${transMonth.slice(-1) == 0 ? transMonth.slice(1) : transMonth}.${transYear}`;
-            
+            const transDate = `${
+              transMonth.slice(-1) == 0 ? transMonth.slice(1) : transMonth
+            }.${transYear}`;
+
             if (
-              `${month.slice(0, 1) == "0" ? month.slice(1) : month}.${year}` === transDate
+              `${month.slice(0, 1) == "0" ? month.slice(1) : month}.${year}` ===
+              transDate
             ) {
               if (trans.typeTransaction) {
                 balance.income += trans.sum;
@@ -113,43 +116,51 @@ class Transactions{
                 balance.consumption += trans.sum;
               }
             }
-        }
+          }
 
-        for(const key in data){
-            const categoryColor = dataCategories.categories.find(i => i.name === key)
+          for (const key in data) {
+            const categoryColor = dataCategories.categories.find(
+              (i) => i.name === key
+            );
             sortingTransactions.push({
-                name: categoryColor.name,
-                nameUA: categoryColor.nameUA,
-                sum: data[key],
-                color: categoryColor.color
-            })
-        }
+              name: categoryColor.name,
+              nameUA: categoryColor.nameUA,
+              sum: data[key],
+              color: categoryColor.color,
+            });
+          }
 
-        const getData = () => {
-            transactions.forEach(el => {
-                if(!el.typeTransaction){
-                    date.push({
-                        month: el.date.slice(3,5),
-                        year: el.date.slice(6,10)
-                    })
-                }
-            })
+          const getData = () => {
+            transactions.forEach((el) => {
+              if (!el.typeTransaction) {
+                date.push({
+                  month: el.date.split(/[-\/ ]/)[0], // Extracts the month
+                  year: el.date.split(/[-\/ ]/)[2], // Extracts the year
+                });
+              }
+            });
             return date.filter((el, i) => {
-                return JSON.stringify(el) !== JSON.stringify(date[i + 1])
-            })
-        }
+              return JSON.stringify(el) !== JSON.stringify(date[i + 1]);
+            });
+          };
 
-        balance.balance = balance.income - balance.consumption
+          balance.balance = balance.income - balance.consumption;
 
-        return res.json({
+          return res.json({
             status: "success",
             code: 200,
             payload: {
-                sortingTransactions,
-                balance: balance,
-                date: getData()
-            }
-        });
+              sortingTransactions,
+              balance: balance,
+              date: getData(),
+            },
+          });
+        } catch (error) {
+          return res
+            .status(400)
+            .json({ status: "error", code: 400, message: "Bad request" });
+        }
+        
     }
 
     async deleteTransaction(req, res){
