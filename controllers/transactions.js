@@ -96,21 +96,22 @@ class Transactions{
 
         for (const trans of transactions) {
 
-            const [currMonth, , currYear] = trans.date.split("/");
+            const [transMonth, , transYear] = trans.date.split("/");
 
-            const currDate = `${currMonth}.${currYear}`;
+            const transDate = `${transMonth.slice(-1) == 0 ? transMonth.slice(1) : transMonth}.${transYear}`;
             
-            if (`${month}.${year}` === currDate) {
-               
-                if (trans.typeTransaction) {
-                    balance.income += trans.sum;
-                }
-                
-                if(!trans.typeTransaction) {
-                    if(!data[trans.category]) data[trans.category] = 0
-                    data[trans.category] += trans.sum
-                    balance.consumption += trans.sum
-                }
+            if (
+              `${month.slice(0, 1) == "0" ? month.slice(1) : month}.${year}` === transDate
+            ) {
+              if (trans.typeTransaction) {
+                balance.income += trans.sum;
+              }
+
+              if (!trans.typeTransaction) {
+                if (!data[trans.category]) data[trans.category] = 0;
+                data[trans.category] += trans.sum;
+                balance.consumption += trans.sum;
+              }
             }
         }
 
@@ -123,8 +124,6 @@ class Transactions{
                 color: categoryColor.color
             })
         }
-
-        console.log(balance)
 
         const getData = () => {
             transactions.forEach(el => {
