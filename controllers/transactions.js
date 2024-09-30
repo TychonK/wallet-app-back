@@ -78,22 +78,34 @@ class Transactions{
         return res.json({ status: "success", code: 200, payload: addBalance() });
     }
 
-    async getStats(req, res){
+    async getStats(req, res) {
         const { _id } = req.user;
         const {month, year} = req.query;
-        const transactions = await WalletModel.find({owner: _id});
+        const transactions = await WalletModel.find({ owner: _id });
+        // console.log(transactions);
         const sortingTransactions = [];
+
         const data = {}
         const date = []
+
         const balance = {
             income: 0,
             consumption: 0,
             balance: 0
         }
-        for(const trans of transactions){
-            const currDate = trans.date.slice(3,trans.date.length)
-            if(`${month}.${year}` === currDate) {
-                if(trans.typeTransaction) balance.income += trans.sum;
+
+        for (const trans of transactions) {
+
+            const [currMonth, , currYear] = trans.date.split("/");
+
+            const currDate = `${currMonth}.${currYear}`;
+            
+            if (`${month}.${year}` === currDate) {
+               
+                if (trans.typeTransaction) {
+                    balance.income += trans.sum;
+                }
+                
                 if(!trans.typeTransaction) {
                     if(!data[trans.category]) data[trans.category] = 0
                     data[trans.category] += trans.sum
@@ -101,6 +113,7 @@ class Transactions{
                 }
             }
         }
+
         for(const key in data){
             const categoryColor = dataCategories.categories.find(i => i.name === key)
             sortingTransactions.push({
@@ -110,6 +123,9 @@ class Transactions{
                 color: categoryColor.color
             })
         }
+
+        console.log(balance)
+
         const getData = () => {
             transactions.forEach(el => {
                 if(!el.typeTransaction){
@@ -119,12 +135,13 @@ class Transactions{
                     })
                 }
             })
-            return date.filter((el,i) => {
+            return date.filter((el, i) => {
                 return JSON.stringify(el) !== JSON.stringify(date[i + 1])
             })
         }
 
         balance.balance = balance.income - balance.consumption
+
         return res.json({
             status: "success",
             code: 200,
