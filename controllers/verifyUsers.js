@@ -14,7 +14,7 @@ const verifyUser = async (req, res) => {
         res
           // .status(HttpCode.OK)
           // .json({ status: 'success', code: HttpCode.OK, data: { message: 'success' } })
-          .redirect("http://wallet-online.netlify.app");
+          .redirect("http://wallet-online.netlify.app/login");
         
     } else {
         res
