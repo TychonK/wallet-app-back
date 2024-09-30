@@ -99,7 +99,7 @@ class Transactions{
             const [transMonth, , transYear] = trans.date.split("/");
 
             const transDate = `${
-              transMonth.slice(-1) == 0 ? transMonth.slice(1) : transMonth
+              transMonth.slice(0, 1) == "0" ? transMonth.slice(1) : transMonth
             }.${transYear}`;
 
             if (
