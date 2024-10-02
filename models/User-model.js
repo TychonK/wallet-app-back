@@ -76,7 +76,7 @@ userSchema.methods.comparePassword = function (password) {
 
 userSchema.methods.setToken = function () {
   const { SECRET_KEY } = process.env;
-  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '1h' });
+  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '12h' });
 };
 
 
